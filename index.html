@@ -1,621 +1,352 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="mn">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Франц хэл сурах Prompts</title>
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Франц хэл сурах Prompts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: #5a67d8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .prompt-card {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .prompt-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .prompt-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #5a67d8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .prompt-text {
+            font-family: 'Georgia', serif;
+            line-height: 1.7;
+            color: #2d3748;
+            white-space: pre-wrap;
+            font-size: 1rem;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #5a67d8;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .copy-btn:hover {
+            background: #4c51bf;
+            transform: translateY(-1px);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        .copy-btn.copied {
+            background: #48bb78;
+        }
+
+        .copy-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .followup-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #2d3748;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        @media (max-width: 600px) {
             body {
-                font-family:
-                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-                    "Helvetica Neue", Arial, sans-serif;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                min-height: 100vh;
-                padding: 40px 20px;
-                color: #333;
-            }
-
-            .container {
-                max-width: 800px;
-                margin: 0 auto;
+                padding: 20px 15px;
             }
 
             h1 {
-                text-align: center;
-                color: white;
-                font-size: 2rem;
-                margin-bottom: 10px;
-                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            }
-
-            .subtitle {
-                text-align: center;
-                color: rgba(255, 255, 255, 0.9);
-                margin-bottom: 40px;
-                font-size: 1.1rem;
+                font-size: 1.5rem;
             }
 
             .section {
-                background: white;
-                border-radius: 16px;
-                padding: 30px;
-                margin-bottom: 30px;
-                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            }
-
-            .section-title {
-                font-size: 1.4rem;
-                color: #5a67d8;
-                margin-bottom: 20px;
-                padding-bottom: 10px;
-                border-bottom: 2px solid #e2e8f0;
-            }
-
-            .prompt-card {
-                background: #f7fafc;
-                border: 1px solid #e2e8f0;
-                border-radius: 12px;
                 padding: 20px;
-                margin-bottom: 20px;
-                position: relative;
-            }
-
-            .prompt-card:last-child {
-                margin-bottom: 0;
-            }
-
-            .prompt-label {
-                font-size: 0.85rem;
-                font-weight: 600;
-                color: #5a67d8;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-                margin-bottom: 10px;
             }
 
             .prompt-text {
-                font-family: "Georgia", serif;
-                line-height: 1.7;
-                color: #2d3748;
-                white-space: pre-wrap;
-                font-size: 1rem;
+                font-size: 0.95rem;
             }
 
             .copy-btn {
-                position: absolute;
-                top: 15px;
-                right: 15px;
-                background: #5a67d8;
-                color: white;
-                border: none;
-                padding: 8px 16px;
-                border-radius: 8px;
-                cursor: pointer;
-                font-size: 0.85rem;
-                font-weight: 500;
-                transition: all 0.2s;
-                display: flex;
-                align-items: center;
-                gap: 6px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
             }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🇫🇷 Франц хэл сурах Prompts</h1>
+        <p class="subtitle">Хуулах товч дээр дарж шууд хуулж ашиглаарай</p>
 
-            .copy-btn:hover {
-                background: #4c51bf;
-                transform: translateY(-1px);
-            }
+        <!-- Main Prompt -->
+        <div class="section">
+            <h2 class="section-title">1. Үндсэн Prompt</h2>
+            <div class="prompt-card">
+                <button class="copy-btn" onclick="copyText(this, 'main-prompt')">
+                    <svg class="copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    Хуулах
+                </button>
+                <div class="prompt-label">Гол төлөвлөгөөний prompt</div>
+                <div class="prompt-text" id="main-prompt">Би франц хэлийг immersion буюу өдөр тутмын орчинд нь байгаа мэт аргаар сурах төлөвлөгөө хүсэж байна.
 
-            .copy-btn:active {
-                transform: translateY(0);
-            }
+Миний төрөлх хэл: Монгол
+Сурах хэл: Франц
 
-            .copy-btn.copied {
-                background: #48bb78;
-            }
+Дараах зүйлсийг багтааж өгнө үү:
 
-            .copy-icon {
-                width: 16px;
-                height: 16px;
-            }
+1. Өдөр бүр хийх 5 immersion activity
+   - Богино, бодит амьдралд хэрэгжүүлэхэд амархан байх
+   - Сонсох, ярих, унших, бичих чадварыг тэнцвэртэй хөгжүүлэх
 
-            .followup-grid {
-                display: grid;
-                gap: 20px;
-            }
+2. 3 төрлийн медиа санал болголт
+   - Төрөл бүрд 3 санал өгнө үү
+   - Жишээ: podcast, YouTube/video, унших материал/app
+   - Эхлэгч болон дунд түвшний суралцагчид тохиромжтой байх
 
-            .toast {
-                position: fixed;
-                bottom: 30px;
-                left: 50%;
-                transform: translateX(-50%) translateY(100px);
-                background: #2d3748;
-                color: white;
-                padding: 14px 28px;
-                border-radius: 10px;
-                font-size: 0.95rem;
-                opacity: 0;
-                transition: all 0.3s ease;
-                z-index: 1000;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            }
+3. Ярианы дадлага хийх 4 стратеги
+   - Монгол хүн францаар ярьж сурахад хэрэгтэй, практик аргууд байх
+   - Өдөр тутмын нөхцөл байдалд ашиглаж болох жишээтэй байх
 
-            .toast.show {
-                transform: translateX(-50%) translateY(0);
-                opacity: 1;
-            }
+4. Монгол хүнд зориулсан дуудлага, суралцах зөвлөмж
+   - Франц хэлний Монгол хэлнээс ялгаатай авиа, дуудлагад анхааруулах
+   - Энгийн, ойлгомжтой тайлбарлах
 
-            @media (max-width: 600px) {
-                body {
-                    padding: 20px 15px;
-                }
+5. Франц хэлний "Өдрийн хэллэг"
+   - Франц хэлээр бичих
+   - Монгол орчуулгыг нь өгөх
+   - Яриандаа хэрхэн ашиглахыг богино тайлбарлах
 
-                h1 {
-                    font-size: 1.5rem;
-                }
-
-                .section {
-                    padding: 20px;
-                }
-
-                .prompt-text {
-                    font-size: 0.95rem;
-                }
-
-                .copy-btn {
-                    padding: 6px 12px;
-                    font-size: 0.8rem;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1>🇫🇷 🇲🇳 цолмонгийн эгчид зориулав</h1>
-            <p class="subtitle">Хуулах товч дээр дарж шууд хуулж ашиглаарай</p>
-
-            <!-- Main Prompt -->
-            <div class="section">
-                <h2 class="section-title">1. Үндсэн Prompt</h2>
-                <div class="prompt-card">
-                    <button
-                        class="copy-btn"
-                        onclick="copyText(this, 'main-prompt')"
-                    >
-                        <svg
-                            class="copy-icon"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                            />
-                        </svg>
-                        Хуулах
-                    </button>
-                    <div class="prompt-label">Гол төлөвлөгөөний prompt</div>
-                    <div class="prompt-text" id="main-prompt">
-                        Би франц хэлийг immersion буюу өдөр тутмын орчинд нь
-                        байгаа мэт аргаар сурах төлөвлөгөө хүсэж байна. Миний
-                        төрөлх хэл: Монгол Сурах хэл: Франц Дараах зүйлсийг
-                        багтааж өгнө үү: 1. Өдөр бүр хийх 5 immersion activity -
-                        Богино, бодит амьдралд хэрэгжүүлэхэд амархан байх -
-                        Сонсох, ярих, унших, бичих чадварыг тэнцвэртэй хөгжүүлэх
-                        2. 3 төрлийн медиа санал болголт - Төрөл бүрд 3 санал
-                        өгнө үү - Жишээ: podcast, YouTube/video, унших
-                        материал/app - Эхлэгч болон дунд түвшний суралцагчид
-                        тохиромжтой байх 3. Ярианы дадлага хийх 4 стратеги -
-                        Монгол хүн францаар ярьж сурахад хэрэгтэй, практик
-                        аргууд байх - Өдөр тутмын нөхцөл байдалд ашиглаж болох
-                        жишээтэй байх 4. Монгол хүнд зориулсан дуудлага,
-                        суралцах зөвлөмж - Франц хэлний Монгол хэлнээс ялгаатай
-                        авиа, дуудлагад анхааруулах - Энгийн, ойлгомжтой
-                        тайлбарлах 5. Франц хэлний "Өдрийн хэллэг" - Франц
-                        хэлээр бичих - Монгол орчуулгыг нь өгөх - Яриандаа
-                        хэрхэн ашиглахыг богино тайлбарлах Хариултаа монгол
-                        хэлээр бичнэ үү. Хэт ерөнхий зөвлөгөө өгөхөөс зайлсхийж,
-                        өдөр бүр хэрэгжүүлж болох, бодитой, тогтмол дадал
-                        болгоход тохиромжтой төлөвлөгөө гаргана уу.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Follow-up Prompts -->
-            <div class="section">
-                <h2 class="section-title">2. Нэмэлт Prompts</h2>
-                <div class="followup-grid">
-                    <div class="prompt-card">
-                        <button
-                            class="copy-btn"
-                            onclick="copyText(this, 'followup-1')"
-                        >
-                            <svg
-                                class="copy-icon"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                />
-                            </svg>
-                            Хуулах
-                        </button>
-                        <div class="prompt-text" id="followup-1">
-                            Франц хэлний дуудлага Монгол хүнд хэцүү байдаг
-                            хэсгүүдийг тайлбарлаж, өдөр бүр хийх pronunciation
-                            drill гаргаж өгнө үү.
-                        </div>
-                    </div>
-
-                    <div class="prompt-card">
-                        <button
-                            class="copy-btn"
-                            onclick="copyText(this, 'followup-2')"
-                        >
-                            <svg
-                                class="copy-icon"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                />
-                            </svg>
-                            Хуулах
-                        </button>
-                        <div class="prompt-text" id="followup-2">
-                            Дээрх immersion plan-д ашиглах 50 хамгийн хэрэгтэй
-                            өдөр тутмын франц өгүүлбэрийг Монгол орчуулгатай нь
-                            гаргаж өгнө үү.
-                        </div>
-                    </div>
-
-                    <div class="prompt-card">
-                        <button
-                            class="copy-btn"
-                            onclick="copyText(this, 'followup-3')"
-                        >
-                            <svg
-                                class="copy-icon"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                />
-                            </svg>
-                            Хуулах
-                        </button>
-                        <div class="prompt-text" id="followup-3">
-                            Би франц хэл сурч байхдаа Монгол хэлээр бодоод франц
-                            руу орчуулах гээд удаад байна. Шууд францаар бодож
-                            эхлэх дасгалууд гаргаж өгнө үү.
-                        </div>
-                    </div>
-
-                    <div class="prompt-card">
-                        <button
-                            class="copy-btn"
-                            onclick="copyText(this, 'followup-4')"
-                        >
-                            <svg
-                                class="copy-icon"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                />
-                            </svg>
-                            Хуулах
-                        </button>
-                        <div class="prompt-text" id="followup-4">
-                            Франц хэлээр өөрийгөө танилцуулах, кофе захиалах,
-                            зам асуух, дэлгүүрт юм авах зэрэг role-play
-                            яриануудыг Монгол орчуулгатай гаргаж өгнө үү.
-                        </div>
-                    </div>
-
-                    <div class="prompt-card">
-                        <button
-                            class="copy-btn"
-                            onclick="copyText(this, 'followup-5')"
-                        >
-                            <svg
-                                class="copy-icon"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                />
-                            </svg>
-                            Хуулах
-                        </button>
-                        <div class="prompt-text" id="followup-5">
-                            Миний өдөр бүр бичсэн франц өгүүлбэрүүдийг засаж,
-                            алдааг нь энгийн Монгол тайлбартайгаар тайлбарлаж
-                            өгнө үү.
-                        </div>
-                    </div>
-
-                    <div class="prompt-card">
-                        <button
-                            class="copy-btn"
-                            onclick="copyText(this, 'followup-6')"
-                        >
-                            <svg
-                                class="copy-icon"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                />
-                            </svg>
-                            Хуулах
-                        </button>
-                        <div class="prompt-text" id="followup-6">
-                            Надад Франц хэлний A1 түвшний 100 хамгийн хэрэгтэй
-                            үгийг сэдвээр нь ангилаад, Монгол орчуулга болон
-                            жишээ өгүүлбэртэй өгнө үү.
-                        </div>
-                    </div>
-
-                    <div class="prompt-card">
-                        <button
-                            class="copy-btn"
-                            onclick="copyText(this, 'followup-7')"
-                        >
-                            <svg
-                                class="copy-icon"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                />
-                            </svg>
-                            Хуулах
-                        </button>
-                        <div class="prompt-text" id="followup-7">
-                            Би франц хэлний сонсох чадвараа сайжруулахыг хүсэж
-                            байна. Сонсох материал сонгох арга, shadowing хийх
-                            алхам, өдөр тутмын дасгал гаргаж өгнө үү.
-                        </div>
-                    </div>
-
-                    <div class="prompt-card">
-                        <button
-                            class="copy-btn"
-                            onclick="copyText(this, 'followup-8')"
-                        >
-                            <svg
-                                class="copy-icon"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                />
-                            </svg>
-                            Хуулах
-                        </button>
-                        <div class="prompt-text" id="followup-8">
-                            Монгол хэлний бүтцээс шалтгаалж франц хэлэнд гаргадаг хамгийн түгээмэл 10 алдааг жишээтэй тайлбарлаж өгнө үү. Жишээ нь: артикль мартдах, эр эм хүйсийг андуудах, to be гэгч орчуулга гүйцэт биш хэрэглэх гэх мэт.
-                        </div>
-                    </div>
-
-                    <div class="prompt-card">
-                        <button
-                            class="copy-btn"
-                            onclick="copyText(this, 'followup-9')"
-                        >
-                            <svg
-                                class="copy-icon"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                />
-                            </svg>
-                            Хуулах
-                        </button>
-                        <div class="prompt-text" id="followup-9">
-                            Франц хэлээр өдөр бүр бичих 30 өдрийн сэдэв өгнө үү. A1-A2 түвшинд тохирсон, богино бөгөөд өдөр тутмын амьдралд хамааралтай сэдвүүд байх. Сэдэв бүрийн 3-5 туслах үг, хэллэгтэй байна уу.
-                        </div>
-                    </div>
-
-                    <div class="prompt-card">
-                        <button
-                            class="copy-btn"
-                            onclick="copyText(this, 'followup-10')"
-                        >
-                            <svg
-                                class="copy-icon"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                />
-                            </svg>
-                            Хуулах
-                        </button>
-                        <div class="prompt-text" id="followup-10">
-                            Франц хэлтэй хүнтэй хэлээ солилцох үед асууж болох 30 асуулт, яриаг эхлүүлэх 10 сэдэв өгнө үү. Мөн хөндлөнгийн түншээ хэрхэн олох талаар зөвлөгөө өгнө үү.
-                        </div>
-                    </div>
-
-                    <div class="prompt-card">
-                        <button
-                            class="copy-btn"
-                            onclick="copyText(this, 'followup-11')"
-                        >
-                            <svg
-                                class="copy-icon"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                />
-                            </svg>
-                            Хуулах
-                        </button>
-                        <div class="prompt-text" id="followup-11">
-                            Франц хэлний хамгийн хэрэгтэй 20 үйл үгийн A1-A2 түвшний хувьд хэлбэрийг өдөр тутмын дасгал болгон гаргаж өгнө үү. Etre, avoir, aller, faire, venir зэргийг багтаана уу. Монгол хэлээр тайлбарлаж, өдөр бүр 5 минутын drill хийх аргыг заана уу.
-                        </div>
-                    </div>
-
-                    <div class="prompt-card">
-                        <button
-                            class="copy-btn"
-                            onclick="copyText(this, 'followup-12')"
-                        >
-                            <svg
-                                class="copy-icon"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                />
-                            </svg>
-                            Хуулах
-                        </button>
-                        <div class="prompt-text" id="followup-12">
-                            Долоо хоног бүр хийх тойм дасгал гаргаж өгнө үү. Энэ долоо хоногт сурсан үг, хэллэг, алдаагаа хэрхэн дүгнэх, дараагийн долоо хоногт юун дээр анхаарах талаар.
-                        </div>
-                    </div>
-
-                    <div class="prompt-card">
-                        <button
-                            class="copy-btn"
-                            onclick="copyText(this, 'followup-13')"
-                        >
-                            <svg
-                                class="copy-icon"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                />
-                            </svg>
-                            Хуулах
-                        </button>
-                        <div class="prompt-text" id="followup-13">
-                            Франц хэл сурч байхдаа мэдэхгүйгээсээ болж эвгүй байдалд орохгүйн тулд мэдвэл зохих 10 соёлын зүйлийг тайлбарлаж өгнө үү. Жишээ нь: tu vs vous, гар барих, хоолны ёс, compliment хэлэх гэх мэт.
-                        </div>
-                    </div>
-                </div>
+Хариултаа монгол хэлээр бичнэ үү.
+Хэт ерөнхий зөвлөгөө өгөхөөс зайлсхийж, өдөр бүр хэрэгжүүлж болох, бодитой, тогтмол дадал болгоход тохиромжтой төлөвлөгөө гаргана уу.</div>
             </div>
         </div>
 
-        <div class="toast" id="toast">✅ Хууллаа!</div>
+        <!-- Follow-up Prompts -->
+        <div class="section">
+            <h2 class="section-title">2. Нэмэлт Prompts</h2>
+            <div class="followup-grid">
+                <div class="prompt-card">
+                    <button class="copy-btn" onclick="copyText(this, 'followup-1')">
+                        <svg class="copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                        Хуулах
+                    </button>
+                    <div class="prompt-label">Дуудлага + Pronunciation Drill</div>
+                    <div class="prompt-text" id="followup-1">Франц хэлний дуудлага Монгол хүнд хэцүү байдаг хэсгүүдийг тайлбарлаж, өдөр бүр хийх pronunciation drill гаргаж өгнө үү.</div>
+                </div>
 
-        <script>
-            async function copyText(btn, elementId) {
-                const text = document.getElementById(elementId).innerText;
-                try {
-                    await navigator.clipboard.writeText(text);
-                    showToast();
+                <div class="prompt-card">
+                    <button class="copy-btn" onclick="copyText(this, 'followup-2')">
+                        <svg class="copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                        Хуулах
+                    </button>
+                    <div class="prompt-label">50 өдөр тутмын өгүүлбэр</div>
+                    <div class="prompt-text" id="followup-2">Дээрх immersion plan-д ашиглах 50 хамгийн хэрэгтэй өдөр тутмын франц өгүүлбэрийг Монгол орчуулгатай нь гаргаж өгнө үү.</div>
+                </div>
 
-                    // Button feedback
-                    const originalHTML = btn.innerHTML;
-                    btn.innerHTML = `
+                <div class="prompt-card">
+                    <button class="copy-btn" onclick="copyText(this, 'followup-3')">
+                        <svg class="copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                        Хуулах
+                    </button>
+                    <div class="prompt-label">Шууд францаар бодох дасгал</div>
+                    <div class="prompt-text" id="followup-3">Би франц хэл сурч байхдаа Монгол хэлээр бодоод франц руу орчуулах гээд удаад байна. Шууд францаар бодож эхлэх дасгалууд гаргаж өгнө үү.</div>
+                </div>
+
+                <div class="prompt-card">
+                    <button class="copy-btn" onclick="copyText(this, 'followup-4')">
+                        <svg class="copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                        Хуулах
+                    </button>
+                    <div class="prompt-label">Role-play ярианууд</div>
+                    <div class="prompt-text" id="followup-4">Франц хэлээр өөрийгөө танилцуулах, кофе захиалах, зам асуух, дэлгүүрт юм авах зэрэг role-play яриануудыг Монгол орчуулгатай гаргаж өгнө үү.</div>
+                </div>
+
+                <div class="prompt-card">
+                    <button class="copy-btn" onclick="copyText(this, 'followup-5')">
+                        <svg class="copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                        Хуулах
+                    </button>
+                    <div class="prompt-label">Бичсэн өгүүлбэр засах</div>
+                    <div class="prompt-text" id="followup-5">Миний өдөр бүр бичсэн франц өгүүлбэрүүдийг засаж, алдааг нь энгийн Монгол тайлбартайгаар тайлбарлаж өгнө үү.</div>
+                </div>
+
+                <div class="prompt-card">
+                    <button class="copy-btn" onclick="copyText(this, 'followup-6')">
+                        <svg class="copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                        Хуулах
+                    </button>
+                    <div class="prompt-label">A1 түвшний 100 үг</div>
+                    <div class="prompt-text" id="followup-6">Надад Франц хэлний A1 түвшний 100 хамгийн хэрэгтэй үгийг сэдвээр нь ангилаад, Монгол орчуулга болон жишээ өгүүлбэртэй өгнө үү.</div>
+                </div>
+
+                <div class="prompt-card">
+                    <button class="copy-btn" onclick="copyText(this, 'followup-7')">
+                        <svg class="copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                        Хуулах
+                    </button>
+                    <div class="prompt-label">Сонсох чадвар сайжруулах</div>
+                    <div class="prompt-text" id="followup-7">Би франц хэлний сонсох чадвараа сайжруулахыг хүсэж байна. Сонсох материал сонгох арга, shadowing хийх алхам, өдөр тутмын дасгал гаргаж өгнө үү.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">✅ Хууллаа!</div>
+
+    <script>
+        async function copyText(btn, elementId) {
+            const text = document.getElementById(elementId).innerText;
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast();
+                
+                // Button feedback
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = `
                     <svg class="copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
                     Хуулсан
                 `;
-                    btn.classList.add("copied");
-
-                    setTimeout(() => {
-                        btn.innerHTML = originalHTML;
-                        btn.classList.remove("copied");
-                    }, 2000);
-                } catch (err) {
-                    // Fallback for older browsers
-                    const textArea = document.createElement("textarea");
-                    textArea.value = text;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    document.execCommand("copy");
-                    document.body.removeChild(textArea);
-                    showToast();
-                }
-            }
-
-            function showToast() {
-                const toast = document.getElementById("toast");
-                toast.classList.add("show");
+                btn.classList.add('copied');
+                
                 setTimeout(() => {
-                    toast.classList.remove("show");
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('copied');
                 }, 2000);
+            } catch (err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast();
             }
-        </script>
-    </body>
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+    </script>
+</body>
 </html>
