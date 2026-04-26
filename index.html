@@ -61,7 +61,8 @@
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 20px;
-            position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         .prompt-card:last-child {
@@ -86,9 +87,9 @@
         }
 
         .copy-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
+            order: 1;
+            align-self: flex-start;
+            margin-top: 16px;
             background: #5a67d8;
             color: white;
             border: none;
@@ -174,7 +175,7 @@
 <body>
     <div class="container">
         <h1>🇫🇷 🇲🇳 Tungaadai д зориулав</h1>
-        <p class="subtitle">Хуулах товч дээр дарж шууд хуулж ашиглаарай</p>
+        <p class="subtitle">ChatGPT, Claude, Gemini, DeepSeek дээр аль аль дээр нь туршиж үзээрэй</p>
 
         <!-- Main Prompt -->
         <div class="section">
